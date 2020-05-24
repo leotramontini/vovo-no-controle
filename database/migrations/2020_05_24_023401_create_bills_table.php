@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateBillisTable extends Migration
+class CreateBillsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,18 +13,18 @@ class CreateBillisTable extends Migration
      */
     public function up()
     {
-        Schema::create('billis', function (Blueprint $table) {
+        Schema::create('bills', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('description');
             $table->timestamp('date');
             $table->float('value');
-            $table->forieng('bank_id');
-            $table->forieng('user_id');
+            $table->integer('bank_id');
+            $table->integer('user_id');
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('users')->on('id');
-            $table->foreign('bank_id')->references('banks')->on('id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('bank_id')->references('id')->on('banks');
 
             $table->index(['user_id', 'bank_id']);
         });
@@ -37,6 +37,6 @@ class CreateBillisTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('billis');
+        Schema::dropIfExists('bills');
     }
 }

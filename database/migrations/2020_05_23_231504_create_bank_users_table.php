@@ -21,8 +21,8 @@ class CreateBankUsersTable extends Migration
             $table->timestamps();
             $table->softDeletes();
 
-            $table->foreign('user_id')->references('users')->on('id');
-            $table->foreign('bank_id')->references('banks')->on('id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('bank_id')->references('id')->on('banks');
 
             $table->index(['user_id', 'bank_id']);
         });
