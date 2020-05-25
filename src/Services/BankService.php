@@ -32,4 +32,19 @@ class BankService
             throw new ServiceProcessException($error->getMessage());
         }
     }
+
+    /**
+     * @param array $bankData
+     * @param int $bankId
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
+     * @throws \Vovo\Exceptions\ServiceProcessException
+     */
+    public function update($bankData, $bankId)
+    {
+        try {
+            return $this->bankRepository->update($bankData, $bankId);
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage());
+        }
+    }
 }

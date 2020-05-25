@@ -45,4 +45,31 @@ class BankController extends BaseController
             $this->throwErrorStore($error->getMessage());
         }
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param int $bankId
+     * @return mixed
+     */
+    public function update(Request $request, $bankId)
+    {
+        $inputs = $request->all();
+        $validator = Validator::make($inputs, BankSupport::CREATE_FIELD_VALIDATOR);
+
+        if ($validator->fails()) {
+            $this->throwErrorBadRequest();
+        }
+
+        try {
+            $this->bankService->update($request->all(), $bankId);
+        } catch (ServiceProcessException $error) {
+            $this->throwErrorUpdate($error->getMessage());
+        }
+
+        return $this->array([
+            'data' => [
+                'message' => 'Banks updated with success'
+            ]
+        ]);
+    }
 }

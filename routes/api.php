@@ -18,4 +18,7 @@ $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
     $api->post('/bank', 'Vovo\Controllers\BankController@store');
+
+    $api->put('/bank/{bankId}', 'Vovo\Controllers\BankController@update')
+    ->where('bankId', '[0-9]+');
 });
