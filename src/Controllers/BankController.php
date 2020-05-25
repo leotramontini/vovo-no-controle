@@ -61,15 +61,11 @@ class BankController extends BaseController
         }
 
         try {
-            $this->bankService->update($request->all(), $bankId);
+            $bank = $this->bankService->update($request->all(), $bankId);
         } catch (ServiceProcessException $error) {
             $this->throwErrorUpdate($error->getMessage());
         }
 
-        return $this->array([
-            'data' => [
-                'message' => 'Banks updated with success'
-            ]
-        ]);
+        return $this->item($bank, new BankTransformer());
     }
 }

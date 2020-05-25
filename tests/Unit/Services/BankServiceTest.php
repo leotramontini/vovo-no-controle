@@ -52,4 +52,38 @@ class BankServiceTest extends TestCase
         $this->expectException(ServiceProcessException::class);
         $this->service->create(['name' => $bankName]);
     }
+
+    public function testUpdate()
+    {
+        $newBankName = $this->faker->name;
+
+        $bank = factory(Bank::class)->create();
+
+        $expected = factory(Bank::class)->make([
+            'id'    => $bank->id,
+            'name'  => $newBankName
+        ]);
+
+        $this->bankRepository
+            ->shouldReceive('update')
+            ->once()
+            ->andReturn($expected);
+
+        $this->assertEquals($expected, $this->service->update(['name' => $newBankName], $bank->id));
+
+    }
+
+    public function testUpdateShouldBeFail()
+    {
+        $bank       = factory(Bank::class)->create();
+        $newBankName   = $this->faker->name;
+
+        $this->bankRepository
+            ->shouldReceive('update')
+            ->once()
+            ->andThrow(Exception::class);
+
+        $this->expectException(ServiceProcessException::class);
+        $this->service->update(['name' => $newBankName], $bank->id);
+    }
 }
