@@ -69,6 +69,10 @@ class BankController extends BaseController
         return $this->item($bank, new BankTransformer());
     }
 
+    /**
+     * @param int $bankId
+     * @return mixed
+     */
     public function delete($bankId)
     {
         try {

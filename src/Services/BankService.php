@@ -48,7 +48,6 @@ class BankService
         }
     }
 
-
     /**
      * @param int $bankId
      * @return int
