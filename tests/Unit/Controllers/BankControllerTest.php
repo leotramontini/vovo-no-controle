@@ -91,4 +91,35 @@ class BankControllerTest extends TestCase
         $response->assertJsonStructure($expected)
             ->assertStatus(400);
     }
+
+    public function testDelete()
+    {
+        $bank = factory(Bank::class)->create();
+
+        $response = $this->json('DELETE', $this->baseResource . '/' . $bank->id);
+
+        $expected = [
+            'data' => [
+                'message' => 'Bank was delete with success'
+            ]
+        ];
+
+        $response->assertJson($expected)
+            ->assertStatus(200);
+    }
+
+    public function testDeleteShouldValidatorError()
+    {
+        $bank = factory(Bank::class)->create();
+
+        $response = $this->json('DELETE', $this->baseResource . '/' . ($bank->id + $this->faker->randomDigitNotNull));
+
+        $expected = [
+            'message',
+            'status_code'
+        ];
+
+        $response->assertJsonStructure($expected)
+            ->assertStatus(422);
+    }
 }

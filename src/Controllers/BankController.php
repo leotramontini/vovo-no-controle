@@ -79,7 +79,7 @@ class BankController extends BaseController
 
         return $this->array([
             'data' => [
-                'Bank was delete with success'
+                'message' => 'Bank was delete with success'
             ]
         ]);
     }

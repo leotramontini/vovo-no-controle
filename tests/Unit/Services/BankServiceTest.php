@@ -86,4 +86,30 @@ class BankServiceTest extends TestCase
         $this->expectException(ServiceProcessException::class);
         $this->service->update(['name' => $newBankName], $bank->id);
     }
+
+    public function testDelete()
+    {
+        $bank = factory(Bank::class)->create();
+
+        $this->bankRepository
+            ->shouldReceive('delete')
+            ->once()
+            ->andReturn(true);
+
+        $this->assertEquals(true, $this->service->delete($bank->id));
+
+    }
+
+    public function testDeleteShouldBeFail()
+    {
+        $bank       = factory(Bank::class)->create();
+
+        $this->bankRepository
+            ->shouldReceive('delete')
+            ->once()
+            ->andThrow(Exception::class);
+
+        $this->expectException(ServiceProcessException::class);
+        $this->service->delete(($bank->id + $this->faker->randomDigitNotNull));
+    }
 }
