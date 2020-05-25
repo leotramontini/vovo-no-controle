@@ -20,7 +20,7 @@ class BankService
     }
 
     /**
-     * @param $bankData
+     * @param array $bankData
      * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
      * @throws \Vovo\Exceptions\ServiceProcessException
      */
