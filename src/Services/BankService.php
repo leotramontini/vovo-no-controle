@@ -47,4 +47,19 @@ class BankService
             throw new ServiceProcessException($error->getMessage());
         }
     }
+
+
+    /**
+     * @param int $bankId
+     * @return int
+     * @throws \Vovo\Exceptions\ServiceProcessException
+     */
+    public function delete($bankId)
+    {
+        try {
+            return $this->bankRepository->delete($bankId);
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage());
+        }
+    }
 }

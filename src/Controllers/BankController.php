@@ -68,4 +68,19 @@ class BankController extends BaseController
 
         return $this->item($bank, new BankTransformer());
     }
+
+    public function delete($bankId)
+    {
+        try {
+            $this->bankService->delete($bankId);
+        } catch (ServiceProcessException $error) {
+            $this->throwErrorDelete($error->getMessage());
+        }
+
+        return $this->array([
+            'data' => [
+                'Bank was delete with success'
+            ]
+        ]);
+    }
 }
