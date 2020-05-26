@@ -96,9 +96,10 @@ class BankController extends BaseController
     {
         try {
             $banks = $this->bankService->index($request->all());
-            return $this->collection($banks, new BankTransformer());
         } catch (ServiceProcessException $error) {
             $this->throwErrorNotFound($error->getMessage());
         }
+
+        return $this->collection($banks, new BankTransformer());
     }
 }

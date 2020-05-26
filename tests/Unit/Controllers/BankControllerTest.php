@@ -122,4 +122,38 @@ class BankControllerTest extends TestCase
         $response->assertJsonStructure($expected)
             ->assertStatus(422);
     }
+
+    public function testIndex()
+    {
+        $bank = factory(Bank::class)->create();
+
+        $response = $this->json('GET', $this->baseResource . '?name=' . $bank->name);
+
+        $expected = [
+            'data' => [
+                [
+                    'id'    => $bank->id,
+                    'name'  => $bank->name
+                ]
+            ]
+        ];
+
+        $response->assertJson($expected)
+            ->assertStatus(200);
+    }
+
+    public function testIndexShouldValidatorError()
+    {
+        factory(Bank::class)->create();
+
+        $response = $this->json('GET', $this->baseResource . '?' . $this->faker->name . '=' . $this->faker->name);
+
+        $expected = [
+            'message',
+            'status_code'
+        ];
+
+        $response->assertJsonStructure($expected)
+            ->assertStatus(404);
+    }
 }
