@@ -13,6 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
+
+$api = app('Dingo\Api\Routing\Router');
+
+$api->version('v1', function ($api) {
+    $api->get('/bank', 'Vovo\Controllers\BankController@index');
+
+    $api->post('/bank', 'Vovo\Controllers\BankController@store');
+
+    $api->put('/bank/{bankId}', 'Vovo\Controllers\BankController@update')
+    ->where('bankId', '[0-9]+');
+
+    $api->delete('/bank/{bankId}', 'Vovo\Controllers\BankController@delete')
+    ->where('bankId', '[0-9]+');
 });
