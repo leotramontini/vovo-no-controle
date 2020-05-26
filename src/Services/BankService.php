@@ -61,4 +61,18 @@ class BankService
             throw new ServiceProcessException($error->getMessage());
         }
     }
+
+    /**
+     * @param array $filter
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
+     * @throws ServiceProcessException
+     */
+    public function index($filter)
+    {
+        try {
+            return $this->bankRepository->findWhere($filter);
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage());
+        }
+    }
 }

@@ -17,6 +17,8 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
+    $api->get('/bank', 'Vovo\Controllers\BankController@index');
+
     $api->post('/bank', 'Vovo\Controllers\BankController@store');
 
     $api->put('/bank/{bankId}', 'Vovo\Controllers\BankController@update')

@@ -87,4 +87,18 @@ class BankController extends BaseController
             ]
         ]);
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
+        try {
+            $banks = $this->bankService->index($request->all());
+            return $this->collection($banks, new BankTransformer());
+        } catch (ServiceProcessException $error) {
+            $this->throwErrorNotFound($error->getMessage());
+        }
+    }
 }
