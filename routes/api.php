@@ -19,9 +19,9 @@ $api = app('Dingo\Api\Routing\Router');
 $api->version('v1', function ($api) {
 
     Route::post('login', '\Vovo\Controllers\AuthController@login');
-    Route::post('logout', 'AuthController@logout');
-    Route::post('refresh', 'AuthController@refresh');
-    Route::post('me', 'AuthController@me');
+    Route::post('logout', '\Vovo\Controllers\AuthController@logout');
+    Route::post('refresh', '\Vovo\Controllers\AuthController@refresh');
+    Route::post('me', '\Vovo\Controllers\AuthController@me');
 
     $api->group(['middleware' => 'auth.jwt'], function ($api) {
         $api->get('/bank', 'Vovo\Controllers\BankController@index');
