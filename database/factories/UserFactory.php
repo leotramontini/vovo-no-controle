@@ -2,7 +2,7 @@
 
 /** @var \Illuminate\Database\Eloquent\Factory $factory */
 
-use App\User;
+use Vovo\Models\User;
 use Vovo\Models\Bank;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;

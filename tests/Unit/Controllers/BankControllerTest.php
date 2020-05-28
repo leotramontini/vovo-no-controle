@@ -2,27 +2,30 @@
 
 namespace Tests\Unit\Controllers;
 
-use Mockery;
-use Exception;
 use Tests\TestCase;
 use Vovo\Models\Bank;
-use Vovo\Repositories\BankRepository;
+use Vovo\Models\User;
 
 class BankControllerTest extends TestCase
 {
     protected $baseResource;
+    protected $token;
 
     public function setUp(): void
     {
         parent::setUp();
         $this->baseResource = '/api/bank';
+        $user = factory(User::class)->create();
+        $this->token = auth()->login($user);
     }
 
     public function testStore()
     {
         $bankName = $this->faker->name;
 
-        $response = $this->json('POST', $this->baseResource, [
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('POST', $this->baseResource, [
             'name' => $bankName
         ]);
 
@@ -41,7 +44,9 @@ class BankControllerTest extends TestCase
     {
         $bankName = $this->faker->name;
 
-        $response = $this->json('POST', $this->baseResource, [
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('POST', $this->baseResource, [
             'name1' => $bankName
         ]);
 
@@ -59,7 +64,9 @@ class BankControllerTest extends TestCase
         $bank = factory(Bank::class)->create();
         $bankName = $this->faker->name;
 
-        $response = $this->json('PUT', $this->baseResource . '/' . $bank->id, [
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('PUT', $this->baseResource . '/' . $bank->id, [
             'name' => $bankName
         ]);
 
@@ -79,7 +86,9 @@ class BankControllerTest extends TestCase
         $bank = factory(Bank::class)->create();
         $bankName = $this->faker->name;
 
-        $response = $this->json('PUT', $this->baseResource . '/' . $bank->id, [
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('PUT', $this->baseResource . '/' . $bank->id, [
             'name1' => $bankName
         ]);
 
@@ -96,7 +105,9 @@ class BankControllerTest extends TestCase
     {
         $bank = factory(Bank::class)->create();
 
-        $response = $this->json('DELETE', $this->baseResource . '/' . $bank->id);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('DELETE', $this->baseResource . '/' . $bank->id);
 
         $expected = [
             'data' => [
@@ -112,7 +123,9 @@ class BankControllerTest extends TestCase
     {
         $bank = factory(Bank::class)->create();
 
-        $response = $this->json('DELETE', $this->baseResource . '/' . ($bank->id + $this->faker->randomDigitNotNull));
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('DELETE', $this->baseResource . '/' . ($bank->id + $this->faker->randomDigitNotNull));
 
         $expected = [
             'message',
@@ -127,7 +140,9 @@ class BankControllerTest extends TestCase
     {
         $bank = factory(Bank::class)->create();
 
-        $response = $this->json('GET', $this->baseResource . '?name=' . $bank->name);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('GET', $this->baseResource . '?name=' . $bank->name);
 
         $expected = [
             'data' => [
@@ -146,7 +161,9 @@ class BankControllerTest extends TestCase
     {
         factory(Bank::class)->create();
 
-        $response = $this->json('GET', $this->baseResource . '?' . $this->faker->name . '=' . $this->faker->name);
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' .  $this->token
+        ])->json('GET', $this->baseResource . '?' . $this->faker->name . '=' . $this->faker->name);
 
         $expected = [
             'message',
