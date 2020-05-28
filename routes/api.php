@@ -17,13 +17,21 @@ use Illuminate\Http\Request;
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version('v1', function ($api) {
-    $api->get('/bank', 'Vovo\Controllers\BankController@index');
 
-    $api->post('/bank', 'Vovo\Controllers\BankController@store');
+    Route::post('login', '\Vovo\Controllers\AuthController@login');
+    Route::post('logout', '\Vovo\Controllers\AuthController@logout');
+    Route::post('refresh', '\Vovo\Controllers\AuthController@refresh');
+    Route::post('me', '\Vovo\Controllers\AuthController@me');
 
-    $api->put('/bank/{bankId}', 'Vovo\Controllers\BankController@update')
-    ->where('bankId', '[0-9]+');
+    $api->group(['middleware' => 'auth.jwt'], function ($api) {
+        $api->get('/bank', 'Vovo\Controllers\BankController@index');
 
-    $api->delete('/bank/{bankId}', 'Vovo\Controllers\BankController@delete')
-    ->where('bankId', '[0-9]+');
+        $api->post('/bank', 'Vovo\Controllers\BankController@store');
+
+        $api->put('/bank/{bankId}', 'Vovo\Controllers\BankController@update')
+            ->where('bankId', '[0-9]+');
+
+        $api->delete('/bank/{bankId}', 'Vovo\Controllers\BankController@delete')
+            ->where('bankId', '[0-9]+');
+    });
 });
