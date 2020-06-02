@@ -29,9 +29,11 @@ $api->version('v1', function ($api) {
         $api->post('/bank', 'Vovo\Controllers\BankController@store');
 
         $api->put('/bank/{bankId}', 'Vovo\Controllers\BankController@update')
-            ->where('bankId', '[0-9]+');
+        ->where('bankId', '[0-9]+');
 
         $api->delete('/bank/{bankId}', 'Vovo\Controllers\BankController@delete')
-            ->where('bankId', '[0-9]+');
+        ->where('bankId', '[0-9]+');
+
+        $api->post('/user', 'Vovo\Controllers\UserController@store');
     });
 });
