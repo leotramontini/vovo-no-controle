@@ -40,9 +40,9 @@ class UserController extends BaseController
 
         try {
             $user = $this->userService->store($inputs);
-            return $this->item($user, new UserTransformer());
         } catch (ServiceProcessException $error) {
             $this->throwErrorStore($error->getMessage());
         }
+        return $this->item($user, new UserTransformer());
     }
 }
