@@ -32,8 +32,6 @@ class UserService
     public function store($inputs)
     {
         try {
-            $password = Arr::get($inputs,'password');
-            Arr::set($inputs, 'password',  bcrypt($password));
             return $this->userRepository->create($inputs);
         } catch (Exception $error) {
             throw new ServiceProcessException($error->getMessage());

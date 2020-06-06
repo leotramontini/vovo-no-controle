@@ -4,8 +4,8 @@ namespace Vovo\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
-use Vovo\Models\User;
 use Vovo\Support\UserSupport;
+use Vovo\Requests\UserRequest;
 use Vovo\Services\UserService;
 use Vovo\Transformer\UserTransformer;
 use Vovo\Exceptions\ServiceProcessException;
@@ -26,13 +26,12 @@ class UserController extends BaseController
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param \Vovo\Requests\UserRequest $request
      * @return mixed
      */
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
         $inputs = $request->all();
-
         $validator = Validator::make($inputs, UserSupport::CREATE_FIELD);
 
         if ($validator->fails()) {
@@ -48,11 +47,11 @@ class UserController extends BaseController
     }
 
     /**
-     * @param \Illuminate\Http\Request $request
+     * @param \Vovo\Requests\UserRequest $request
      * @param int $userId
      * @return mixed
      */
-    public function update(Request $request, $userId)
+    public function update(UserRequest $request, $userId)
     {
         $inputs = $request->all();
 
