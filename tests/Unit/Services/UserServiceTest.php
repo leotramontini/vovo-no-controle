@@ -56,4 +56,42 @@ class UserServiceTest extends TestCase
         $this->expectException(ServiceProcessException::class);
         $this->userService->store($user);
     }
+
+
+    public function testUpdatee()
+    {
+        $user = factory(User::class)->create();
+
+        $inputs = [
+            'name'      => $this->faker->name
+        ];
+
+        $this->userRepository
+            ->shouldReceive('update')
+            ->with($inputs, $user->id)
+            ->once()
+            ->andReturn(Mockery::mock(User::class));
+
+        $this->assertInstanceOf(User::class, $this->userService->update($inputs, $user->id));
+    }
+
+    public function testUpdateShouldBeFail()
+    {
+        $user = factory(User::class)->create();
+
+        $inputs = [
+            'name'      => $this->faker->name
+        ];
+
+        $userId = $user->id + $this->faker->randomDigitNotNull;
+
+        $this->userRepository
+            ->shouldReceive('update')
+            ->with($inputs, $userId)
+            ->once()
+            ->andThrow(Exception::class);
+
+        $this->expectException(ServiceProcessException::class);
+        $this->userService->update($inputs, $userId);
+    }
 }

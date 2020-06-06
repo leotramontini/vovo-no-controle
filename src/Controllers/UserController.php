@@ -4,6 +4,7 @@ namespace Vovo\Controllers;
 
 use Validator;
 use Illuminate\Http\Request;
+use Vovo\Models\User;
 use Vovo\Support\UserSupport;
 use Vovo\Services\UserService;
 use Vovo\Transformer\UserTransformer;
@@ -43,6 +44,24 @@ class UserController extends BaseController
         } catch (ServiceProcessException $error) {
             $this->throwErrorStore($error->getMessage());
         }
+        return $this->item($user, new UserTransformer());
+    }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @param int $userId
+     * @return mixed
+     */
+    public function update(Request $request, $userId)
+    {
+        $inputs = $request->all();
+
+        try {
+            $user = $this->userService->update($inputs, $userId);
+        } catch (ServiceProcessException $error) {
+            $this->throwErrorUpdate($error->getMessage());
+        }
+
         return $this->item($user, new UserTransformer());
     }
 }
