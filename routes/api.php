@@ -35,5 +35,7 @@ $api->version('v1', function ($api) {
         $api->delete('/bank/{bankId}', 'Vovo\Controllers\BankController@delete')
         ->where('bankId', '[0-9]+');
 
+        $api->put('user/{userId}', 'Vovo\Controllers\UserController@update')
+        ->where('userId', '[0-9]+');
     });
 });

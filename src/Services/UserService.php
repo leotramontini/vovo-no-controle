@@ -27,6 +27,7 @@ class UserService
     /**
      * @param array $inputs
      * @return \Vovo\Models\User
+     * @throws \Vovo\Exceptions\ServiceProcessException
      */
     public function store($inputs)
     {
@@ -34,6 +35,21 @@ class UserService
             $password = Arr::get($inputs,'password');
             Arr::set($inputs, 'password',  bcrypt($password));
             return $this->userRepository->create($inputs);
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage());
+        }
+    }
+
+    /**
+     * @param array $inputs
+     * @param int $userId
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
+     * @throws \Vovo\Exceptions\ServiceProcessException
+     */
+    public function update($inputs, $userId)
+    {
+        try {
+            return $this->userRepository->update($inputs, $userId);
         } catch (Exception $error) {
             throw new ServiceProcessException($error->getMessage());
         }
