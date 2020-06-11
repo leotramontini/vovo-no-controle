@@ -94,4 +94,31 @@ class UserServiceTest extends TestCase
         $this->expectException(ServiceProcessException::class);
         $this->userService->update($inputs, $userId);
     }
+
+    public function testDelete()
+    {
+        $user = factory(User::class)->create();
+
+        $this->userRepository
+            ->shouldReceive('delete')
+            ->with($user->id)
+            ->once()
+            ->andReturn(1);
+
+        $this->assertEquals(1, $this->userService->delete($user->id));
+    }
+
+    public function testDeleteShouldBeFail()
+    {
+        $user = factory(User::class)->create();
+
+        $this->userRepository
+            ->shouldReceive('delete')
+            ->with($user->id)
+            ->once()
+            ->andThrow(Exception::class);
+
+        $this->expectException(ServiceProcessException::class);
+        $this->userService->delete($user->id);
+    }
 }

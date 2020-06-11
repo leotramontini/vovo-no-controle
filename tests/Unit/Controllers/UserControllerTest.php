@@ -88,4 +88,35 @@ class UserControllerTest extends TestCase
             'status_code'
         ])->assertStatus(422);
     }
+
+    public function testDelete()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->json('DELETE', $this->baseResource . '/' . $user->id);
+
+        $response->assertJsonStructure([
+            'data' => [
+                'message'
+            ],
+        ])->assertStatus(200);
+    }
+
+    public function testDeleteShouldBeFail()
+    {
+        $user = factory(User::class)->create();
+
+        $userId = $this->faker->randomDigitNotNull + $user->id;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->json('DELETE', $this->baseResource . '/' . $userId);
+
+        $response->assertJsonStructure([
+            'message',
+            'status_code'
+        ])->assertStatus(422);
+    }
 }
