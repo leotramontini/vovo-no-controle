@@ -37,5 +37,8 @@ $api->version('v1', function ($api) {
 
         $api->put('user/{userId}', 'Vovo\Controllers\UserController@update')
         ->where('userId', '[0-9]+');
+
+        $api->delete('user/{userId}', 'Vovo\Controllers\UserController@delete')
+        ->where('userId', '[0-9]+');
     });
 });
