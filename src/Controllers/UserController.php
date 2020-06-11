@@ -63,4 +63,23 @@ class UserController extends BaseController
 
         return $this->item($user, new UserTransformer());
     }
+
+    /**
+     * @param int $userId
+     * @return mixed
+     */
+    public function delete($userId)
+    {
+        try {
+            $this->userService->delete($userId);
+        } catch (ServiceProcessException $error) {
+            $this->throwErrorDelete($error->getMessage());
+        }
+
+        return $this->array([
+            'data' => [
+                'message' => 'User was delete with success'
+            ]
+        ]);
+    }
 }

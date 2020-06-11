@@ -52,4 +52,18 @@ class UserService
             throw new ServiceProcessException($error->getMessage());
         }
     }
+
+    /**
+     * @param int $userId
+     * @return int
+     * @throws \Vovo\Exceptions\ServiceProcessException
+     */
+    public function delete($userId)
+    {
+        try {
+            return $this->userRepository->delete($userId);
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage(), $error->getCode());
+        }
+    }
 }
