@@ -119,4 +119,39 @@ class UserControllerTest extends TestCase
             'status_code'
         ])->assertStatus(422);
     }
+
+    public function testIndex()
+    {
+        $user = factory(User::class)->create();
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->json('GET', $this->baseResource . '?id=' . $user->id);
+
+        $response->assertJson([
+            'data' => [
+                [
+                    'id'    => $user->id,
+                    'name'  => $user->name,
+                    'email' => $user->email
+                ]
+            ],
+        ])->assertStatus(200);
+    }
+
+    public function testIndexShouldBeFail()
+    {
+        $user = factory(User::class)->create();
+
+        $userId = $this->faker->randomDigitNotNull + $user->id;
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->json('GET', $this->baseResource . '?id=' . $userId);
+
+        $response->assertJsonStructure([
+            'message',
+            'status_code'
+        ])->assertStatus(404);
+    }
 }
