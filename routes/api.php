@@ -42,5 +42,7 @@ $api->version('v1', function ($api) {
         ->where('userId', '[0-9]+');
 
         $api->get('user', 'Vovo\Controllers\UserController@index');
+
+        $api->post('bill', 'Vovo\Controllers\BillController@store');
     });
 });
