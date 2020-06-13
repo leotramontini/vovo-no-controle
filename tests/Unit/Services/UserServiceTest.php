@@ -121,4 +121,59 @@ class UserServiceTest extends TestCase
         $this->expectException(ServiceProcessException::class);
         $this->userService->delete($user->id);
     }
+
+    public function testIndex()
+    {
+        $user = factory(User::class)->create();
+
+        $filter = [
+            'id'    => $user->id
+        ];
+
+        $this->userRepository
+            ->shouldReceive('findWhere')
+            ->with($filter)
+            ->once()
+            ->andReturn(collect([$user]));
+
+        $this->assertEquals(collect([$user]), $this->userService->index($filter));
+    }
+
+    public function testIndexShouldBeFail()
+    {
+        $user = factory(User::class)->create();
+
+        $filter = [
+            'id' => $user->id
+        ];
+
+        $this->userRepository
+            ->shouldReceive('findWhere')
+            ->with($filter)
+            ->once()
+            ->andThrow(Exception::class);
+
+        $this->expectException(ServiceProcessException::class);
+        $this->userService->index($filter);
+    }
+
+    public function testIndexWithEmptyResult()
+    {
+        $user = factory(User::class)->create();
+
+        $filter = [
+            'id' => $user->id + $this->faker->randomDigitNotNull
+        ];
+
+        $this->userRepository
+            ->shouldReceive('findWhere')
+            ->with($filter)
+            ->once()
+            ->andThrow(collect([]));
+
+        $this->expectException(ServiceProcessException::class);
+        $this->userService->index($filter);
+    }
+
+
 }
