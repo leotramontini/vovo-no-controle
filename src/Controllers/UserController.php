@@ -82,4 +82,18 @@ class UserController extends BaseController
             ]
         ]);
     }
+
+    /**
+     * @param \Illuminate\Http\Request $request
+     * @return mixed
+     */
+    public function index(Request $request)
+    {
+        try {
+            $user = $this->userService->index($request->all());
+            return $this->collection($user, new UserTransformer());
+        } catch (ServiceProcessException $error) {
+            $this->throwErrorNotFound($error->getMessage());
+        }
+    }
 }

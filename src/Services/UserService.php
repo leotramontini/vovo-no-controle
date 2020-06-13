@@ -66,4 +66,23 @@ class UserService
             throw new ServiceProcessException($error->getMessage(), $error->getCode());
         }
     }
+
+    /**
+     * @param array $filter
+     * @return \Illuminate\Contracts\Pagination\LengthAwarePaginator|\Illuminate\Support\Collection|mixed
+     * @throws \Vovo\Exceptions\ServiceProcessException
+     */
+    public function index($filter)
+    {
+        try {
+            $user = $this->userRepository->findWhere($filter);
+            if ($user->isEmpty()) {
+                throw new Exception('User not found.');
+            }
+
+            return $user;
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage(), $error->getCode());
+        }
+    }
 }
