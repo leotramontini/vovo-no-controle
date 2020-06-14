@@ -3,8 +3,9 @@
 
 namespace Vovo\Services;
 
-use SebastianBergmann\ObjectReflector\InvalidArgumentException;
+use Exception;
 use Vovo\Repositories\BankUserRepository;
+use Vovo\Exceptions\ServiceProcessException;
 
 class BankUserService
 {
@@ -28,7 +29,7 @@ class BankUserService
         try {
             return $this->bankUserRepository->firstOrCreate(['bank_id' => $bankId, 'user_id' => $userId]);
         } catch (Exception $error) {
-            throw new InvalidArgumentException($error->getMessage());
+            throw new ServiceProcessException($error->getMessage());
         }
     }
 }
