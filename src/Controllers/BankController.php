@@ -3,6 +3,8 @@
 namespace Vovo\Controllers;
 
 use Validator;
+use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Vovo\Support\BankSupport;
 use Vovo\Services\BankService;
@@ -28,41 +30,50 @@ class BankController extends BaseController
     /**
      * @param \Illuminate\Http\Request $request
      * @return mixed
+     * @throws Exception
      */
     public function store(Request $request)
     {
         $inputs = $request->all();
-        $validator = Validator::make($inputs, BankSupport::CREATE_FIELD_VALIDATOR);
-
-        if ($validator->fails()) {
-            $this->throwErrorBadRequest();
-        }
 
         try {
+            $validator = Validator::make($inputs, BankSupport::CREATE_FIELD_VALIDATOR);
+            if ($validator->fails()) {
+                $messages   = $validator->getMessageBag()->messages();
+                $message    = Arr::first(Arr::first($messages));
+                throw new Exception($message);
+            }
+
             $bank = $this->bankService->create($inputs);
-            return $this->item($bank, new BankTransformer());
-        } catch (ServiceProcessException $error) {
+
+        } catch (Exception $error) {
             $this->throwErrorStore($error->getMessage());
         }
+
+        return $this->item($bank, new BankTransformer());
     }
 
     /**
      * @param \Illuminate\Http\Request $request
      * @param int $bankId
      * @return mixed
+     * @throws Exception
      */
     public function update(Request $request, $bankId)
     {
         $inputs = $request->all();
-        $validator = Validator::make($inputs, BankSupport::CREATE_FIELD_VALIDATOR);
-
-        if ($validator->fails()) {
-            $this->throwErrorBadRequest();
-        }
 
         try {
+            $validator = Validator::make($inputs, BankSupport::CREATE_FIELD_VALIDATOR);
+
+            if ($validator->fails()) {
+                $messages   = $validator->getMessageBag()->messages();
+                $message    = Arr::first(Arr::first($messages));
+                throw new Exception($message);
+            }
+
             $bank = $this->bankService->update($request->all(), $bankId);
-        } catch (ServiceProcessException $error) {
+        } catch (Exception $error) {
             $this->throwErrorUpdate($error->getMessage());
         }
 

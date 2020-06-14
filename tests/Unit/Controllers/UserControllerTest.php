@@ -45,7 +45,7 @@ class UserControllerTest extends TestCase
         $response->assertJsonStructure([
             'message',
             'status_code'
-        ])->assertStatus(400);
+        ])->assertStatus(422);
     }
 
     public function testUpdate()

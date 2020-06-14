@@ -3,6 +3,8 @@
 namespace Vovo\Controllers;
 
 use Validator;
+use Exception;
+use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Vovo\Support\UserSupport;
 use Vovo\Requests\UserRequest;
@@ -34,13 +36,15 @@ class UserController extends BaseController
         $inputs = $request->all();
         $validator = Validator::make($inputs, UserSupport::CREATE_FIELD);
 
-        if ($validator->fails()) {
-            $this->throwErrorBadRequest();
-        }
-
         try {
+            if ($validator->fails()) {
+                $messages   = $validator->getMessageBag()->messages();
+                $message    = Arr::first(Arr::first($messages));
+                throw new Exception($message);
+            }
+
             $user = $this->userService->store($inputs);
-        } catch (ServiceProcessException $error) {
+        } catch (Exception $error) {
             $this->throwErrorStore($error->getMessage());
         }
         return $this->item($user, new UserTransformer());
@@ -91,9 +95,9 @@ class UserController extends BaseController
     {
         try {
             $user = $this->userService->index($request->all());
-            return $this->collection($user, new UserTransformer());
         } catch (ServiceProcessException $error) {
             $this->throwErrorNotFound($error->getMessage());
         }
+        return $this->collection($user, new UserTransformer());
     }
 }

@@ -17,7 +17,7 @@ class CreateBankUsersTable extends Migration
             $table->bigIncrements('id');
             $table->integer('user_id')->unsigend();
             $table->integer('bank_id')->unsigend();
-            $table->float('balance');
+            $table->float('balance')->default(0);
             $table->timestamps();
             $table->softDeletes();
 
