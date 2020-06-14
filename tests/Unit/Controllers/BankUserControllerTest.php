@@ -52,6 +52,6 @@ class BankUserControllerTest extends TestCase
         $response->assertJsonStructure([
             'message',
             'status_code'
-        ])->assertStatus(500);
+        ])->assertStatus(422);
     }
 }

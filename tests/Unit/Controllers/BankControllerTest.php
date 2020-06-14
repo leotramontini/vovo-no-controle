@@ -56,7 +56,7 @@ class BankControllerTest extends TestCase
         ];
 
         $response->assertJsonStructure($expected)
-            ->assertStatus(400);
+            ->assertStatus(422);
     }
 
     public function testUpdate()
@@ -98,7 +98,7 @@ class BankControllerTest extends TestCase
         ];
 
         $response->assertJsonStructure($expected)
-            ->assertStatus(400);
+            ->assertStatus(422);
     }
 
     public function testDelete()
