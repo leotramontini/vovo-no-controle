@@ -47,9 +47,9 @@ class BankUserController extends BaseController
             }
 
             $bankUser = $this->bankUserService->store(Arr::get($inputs, 'bank_id'), $user->id);
-            return $this->item($bankUser, new BankUserTransformer());
-        } catch (ServiceProcessException $error) {
+        } catch (Exception $error) {
             $this->throwErrorStore($error->getMessage());
         }
+        return $this->item($bankUser, new BankUserTransformer());
     }
 }
