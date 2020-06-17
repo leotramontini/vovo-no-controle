@@ -8,6 +8,7 @@ use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Vovo\Support\BillSupport;
 use Vovo\Services\BillService;
+use Vovo\Transformer\BillTransformer;
 use Vovo\Exceptions\ServiceProcessException;
 
 class BillController extends BaseController
@@ -28,6 +29,7 @@ class BillController extends BaseController
 
     /**
      * @param \Illuminate\Http\Request $request
+     * @return mixed
      * @throws Exception
      */
     public function store(Request $request)
@@ -42,11 +44,11 @@ class BillController extends BaseController
                 throw new Exception($message);
             }
 
-            $bill = $this->billService->create($inputs);
+            $bill = $this->billService->store($inputs);
         } catch (ServiceProcessException $error) {
             $this->throwErrorStore($error->getMessage());
         }
 
-        return $bill;
+        return $this->item($bill, new BillTransformer());
     }
 }

@@ -11,6 +11,7 @@ class BankUser extends Model
      */
     public $fillable = [
         'bank_id',
-        'user_id'
+        'user_id',
+        'balance'
     ];
 }
