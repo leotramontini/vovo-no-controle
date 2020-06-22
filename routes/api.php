@@ -44,5 +44,6 @@ $api->version('v1', function ($api) {
         $api->get('user', 'Vovo\Controllers\UserController@index');
 
         $api->post('bank-user', 'Vovo\Controllers\BankUserController@store');
+        $api->post('bill', 'Vovo\Controllers\BillController@store');
     });
 });
