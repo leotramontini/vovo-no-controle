@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Vovo\Support\BillSupport;
 use Vovo\Services\BillService;
 use Vovo\Transformer\BillTransformer;
-use Vovo\Exceptions\ServiceProcessException;
 
 class BillController extends BaseController
 {
@@ -45,7 +44,7 @@ class BillController extends BaseController
             }
 
             $bill = $this->billService->store($inputs);
-        } catch (ServiceProcessException $error) {
+        } catch (Exception $error) {
             $this->throwErrorStore($error->getMessage());
         }
 
