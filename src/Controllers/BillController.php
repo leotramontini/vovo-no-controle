@@ -59,14 +59,14 @@ class BillController extends BaseController
     {
         try {
             $this->billService->delete($billId);
-
-            return $this->array([
-                'data' => [
-                    'message' => 'Bill has deleted with success'
-                ]
-            ]);
         } catch (Exception $error) {
             $this->throwErrorDelete($error->getMessage());
         }
+
+        return $this->array([
+            'data' => [
+                'message' => 'Bill has deleted with success'
+            ]
+        ]);
     }
 }

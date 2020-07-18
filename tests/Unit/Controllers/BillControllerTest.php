@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use Tests\TestCase;
 use Vovo\Models\Bank;
 use Vovo\Models\BankUser;
+use Vovo\Models\Bill;
 use Vovo\Models\User;
 
 class BillControllerTest extends TestCase
@@ -67,6 +68,55 @@ class BillControllerTest extends TestCase
         $response = $this->withHeaders([
             'Authorization' => 'Bearer ' . $this->token
         ])->json('POST', $this->baseResource, $inputs);
+
+        $response->assertJsonStructure([
+            'message',
+            'status_code'
+        ])->assertStatus(422);
+    }
+
+    public function testDelete()
+    {
+        $user   = factory(User::class)->create();
+        $bank   = factory(Bank::class)->create();
+
+        $bankUser = factory(BankUser::class)->create([
+            'bank_id'   => $bank->id,
+            'user_id'   => $user->id
+        ]);
+
+        $bill = factory(Bill::class)->create([
+            'bank_user_id' => $bankUser->id
+        ]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->json('DELETE', $this->baseResource . '/' . $bill->id);
+
+        $response->assertJson([
+            'data' => [
+                'message' => 'Bill has deleted with success'
+            ]
+        ])->assertStatus(200);
+    }
+
+    public function testDeleteShouldBeFail()
+    {
+        $user   = factory(User::class)->create();
+        $bank   = factory(Bank::class)->create();
+
+        $bankUser = factory(BankUser::class)->create([
+            'bank_id'   => $bank->id,
+            'user_id'   => $user->id
+        ]);
+
+        $bill = factory(Bill::class)->create([
+            'bank_user_id' => $bankUser->id
+        ]);
+
+        $response = $this->withHeaders([
+            'Authorization' => 'Bearer ' . $this->token
+        ])->json('DELETE', $this->baseResource . '/' . ($bill->id + $this->faker->randomDigitNotNull));
 
         $response->assertJsonStructure([
             'message',

@@ -4,6 +4,7 @@
 
 use Vovo\Models\User;
 use Vovo\Models\Bank;
+use \Vovo\Models\Bill;
 use Vovo\Models\BankUser;
 use Faker\Generator as Faker;
 use Illuminate\Support\Str;
@@ -38,5 +39,13 @@ $factory->define(Bank::class, function (Faker $faker) {
 $factory->define(BankUser::class, function (Faker $faker) {
     return [
         'balance'   => $faker->randomDigitNotNull
+    ];
+});
+
+$factory->define(Bill::class, function (Faker $faker) {
+    return [
+        'description'   => $faker->word,
+        'value'         => $faker->randomDigitNotNull,
+        'date'          => $faker->date($format = 'Y-m-d', $max = 'now')
     ];
 });
