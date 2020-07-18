@@ -77,4 +77,18 @@ class BillService
             throw new ServiceProcessException($error->getMessage());
         }
     }
+
+    /**
+     * @param int $billId
+     * @return int
+     * @throws \Vovo\Exceptions\ServiceProcessException
+     */
+    public function delete($billId)
+    {
+        try {
+            return $this->billRepository->delete($billId);
+        } catch (Exception $error) {
+            throw new ServiceProcessException($error->getMessage());
+        }
+    }
 }

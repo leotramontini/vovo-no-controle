@@ -45,5 +45,7 @@ $api->version('v1', function ($api) {
 
         $api->post('bank-user', 'Vovo\Controllers\BankUserController@store');
         $api->post('bill', 'Vovo\Controllers\BillController@store');
+        $api->delete('bill/{billId}', 'Vovo\Controllers\BillController@delete')
+            ->where('billId', '[0-9]');
     });
 });

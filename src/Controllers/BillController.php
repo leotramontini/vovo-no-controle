@@ -50,4 +50,23 @@ class BillController extends BaseController
 
         return $this->item($bill, new BillTransformer());
     }
+
+    /**
+     * @param int $billId
+     * @return mixed
+     */
+    public function delete($billId)
+    {
+        try {
+            $this->billService->delete($billId);
+
+            return $this->array([
+                'data' => [
+                    'message' => 'Bill has deleted with success'
+                ]
+            ]);
+        } catch (Exception $error) {
+            $this->throwErrorDelete($error->getMessage());
+        }
+    }
 }
